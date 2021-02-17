@@ -1,0 +1,13 @@
+C:\Users\Student\workspace\projects\Minesweaper\Minesweaper\bin\Debug\netcoreapp3.1\Minesweaper.exe
+C:\Users\Student\workspace\projects\Minesweaper\Minesweaper\bin\Debug\netcoreapp3.1\Minesweaper.deps.json
+C:\Users\Student\workspace\projects\Minesweaper\Minesweaper\bin\Debug\netcoreapp3.1\Minesweaper.runtimeconfig.json
+C:\Users\Student\workspace\projects\Minesweaper\Minesweaper\bin\Debug\netcoreapp3.1\Minesweaper.runtimeconfig.dev.json
+C:\Users\Student\workspace\projects\Minesweaper\Minesweaper\bin\Debug\netcoreapp3.1\Minesweaper.dll
+C:\Users\Student\workspace\projects\Minesweaper\Minesweaper\bin\Debug\netcoreapp3.1\Minesweaper.pdb
+C:\Users\Student\workspace\projects\Minesweaper\Minesweaper\obj\Debug\netcoreapp3.1\Minesweaper.csprojAssemblyReference.cache
+C:\Users\Student\workspace\projects\Minesweaper\Minesweaper\obj\Debug\netcoreapp3.1\Minesweaper.AssemblyInfoInputs.cache
+C:\Users\Student\workspace\projects\Minesweaper\Minesweaper\obj\Debug\netcoreapp3.1\Minesweaper.AssemblyInfo.cs
+C:\Users\Student\workspace\projects\Minesweaper\Minesweaper\obj\Debug\netcoreapp3.1\Minesweaper.csproj.CoreCompileInputs.cache
+C:\Users\Student\workspace\projects\Minesweaper\Minesweaper\obj\Debug\netcoreapp3.1\Minesweaper.dll
+C:\Users\Student\workspace\projects\Minesweaper\Minesweaper\obj\Debug\netcoreapp3.1\Minesweaper.pdb
+C:\Users\Student\workspace\projects\Minesweaper\Minesweaper\obj\Debug\netcoreapp3.1\Minesweaper.genruntimeconfig.cache

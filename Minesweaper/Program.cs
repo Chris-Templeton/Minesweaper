@@ -6,7 +6,15 @@ namespace Minesweaper
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            // menu stuff
+
+            // create objects
+
+            // allow gameplay
+
+            Board b = new Board(10, 10);
+            b.Populate(Difficulty.Hard);
+            Console.WriteLine(b.ToString());
         }
     }
 }
