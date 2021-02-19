@@ -8,12 +8,12 @@ namespace Minesweaper.Menus
     public abstract class Menu
     {
         protected abstract Dictionary<string, Action> options { get; }
-        protected IUIHelper UIHelper;
+        protected IUIHelper uiHelper;
         protected bool isRunning;
 
         public Menu(IUIHelper uiHelper)
         {
-            UIHelper = uiHelper;
+            this.uiHelper = uiHelper;
             isRunning = true;
         }
 
@@ -25,16 +25,16 @@ namespace Minesweaper.Menus
 
             do
             {
-                UIHelper.WriteLine("");
+                uiHelper.WriteLine("");
                 for (int i = 0; i < prompt.Count; i++)
                 {
-                    UIHelper.WriteLine($"{i + 1}. {prompt[i]}");
+                    uiHelper.WriteLine($"{i + 1}. {prompt[i]}");
                 }
 
-                selection = UIHelper.GetInteger($"Select option (1-{prompt.Count}):") - 1;
+                selection = uiHelper.GetInteger($"Select option (1-{prompt.Count}):") - 1;
                 if (selection < 0 || selection >= prompt.Count)
                 {
-                    UIHelper.WriteLine("Not a valid option.");
+                    uiHelper.WriteLine("Not a valid option.");
                 }
                 else if (selection < prompt.Count - 1)
                 {

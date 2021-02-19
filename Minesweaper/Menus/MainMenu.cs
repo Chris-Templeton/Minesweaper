@@ -22,13 +22,13 @@ namespace Minesweaper.Menus
 
         void PlayGame()
         {
-            Menu selectDifficulty = new DifficultyMenu(UIHelper);
+            Menu selectDifficulty = new DifficultyMenu(uiHelper);
             selectDifficulty.Open();
         }
 
         void ViewHighScores()
         {
-            UIHelper.WriteLine("View High scores was selected #NotImplimented");
+            uiHelper.WriteLine("View High scores was selected #NotImplimented");
         }
     }
 }

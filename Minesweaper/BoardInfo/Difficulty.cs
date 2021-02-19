@@ -9,6 +9,6 @@ namespace Minesweaper.BoardInfo
     /// </summary>
     public enum Difficulty
     {
-        Easy = 15, Medium = 25, Hard = 35
+        Easy = 10, Medium = 20, Hard = 30
     }
 }

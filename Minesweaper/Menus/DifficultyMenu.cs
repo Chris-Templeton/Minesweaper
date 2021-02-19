@@ -39,7 +39,7 @@ namespace Minesweaper.Menus
 
         private void Play(Difficulty diff)
         {
-            Minesweaper ms = new Minesweaper(diff, 10, 10, UIHelper);
+            Minesweaper ms = new Minesweaper(diff, 10, 10, uiHelper);
             ms.Play();
             isRunning = false;
         }

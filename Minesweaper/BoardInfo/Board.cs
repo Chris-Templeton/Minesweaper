@@ -7,10 +7,7 @@ namespace Minesweaper.BoardInfo
     public class Board
     {
         private Dictionary<string, Square> board;
-        private List<string> guesses;
-        private readonly int xSize, ySize;
-
-        public bool IsFinished { get; private set; }
+        public readonly int xSize, ySize;
 
         /// <summary>
         /// Creates board of given (X x Y) size.
@@ -20,19 +17,16 @@ namespace Minesweaper.BoardInfo
         public Board(int x, int y)
         {
             board = new Dictionary<string, Square>();
-            guesses = new List<string>();
             xSize = x; ySize = y;
-            IsFinished = false;
 
             for (int i = 0; i < xSize; i++)
             {
                 for (int j = 0; j < ySize; j++)
                 {
-                    board.Add($"{GetLetterIndex(i)}{j + 1}", Square.Empty);
+                    board.Add($"{GetLetterOfInt(i)}{j + 1}", Square.Empty);
                 }
             }
         }
-
 
         /// <summary>
         /// Poopulates board based off difficulty.
@@ -47,39 +41,41 @@ namespace Minesweaper.BoardInfo
 
             while (numMines < totalMinesNeeded)
             {
-                int randomKey = rand.Next(0, keys.Count);
-                if (!board[keys[randomKey]].Equals(Square.Mine))
+                int randomX = rand.Next(0, xSize);
+                int randomY = rand.Next(0, ySize);
+                string randomSquare = $"{GetLetterOfInt(randomX)}{randomY+1}";
+                if (!board[randomSquare].Equals(Square.Mine))
                 {
-                    board[keys[randomKey]] = Square.Mine;
+                    board[randomSquare] = Square.Mine;
+                    AddOneToSurrounding(randomX, randomY);
                     numMines++;
                 }
             }
         }
 
-        public string Guess(string guess)
+        /// <summary>
+        /// Helper class that increments all of the squares around a mine by one.
+        /// </summary>
+        /// <param name="x">x coordinate of mine</param>
+        /// <param name="y">y coordinate of mine</param>
+        private void AddOneToSurrounding(int x, int y)
         {
-            if (!board.ContainsKey(guess))
-                return "Guess is not valid.";
-            if (guesses.Contains(guess))
-                return "You already guessed that!";
-
-            guesses.Add(guess);
-            if (guesses.Count > 5) IsFinished = true;
-            return $"Your guess was a {board[guess]}";
-        }
-
-        public override string ToString()
-        {
-            string output = "";
-            for (int i = -1; i < ySize; i++)
+            for (int i = x - 1; i <= x + 1; i++)
             {
-                for (int j = -1; j < xSize; j++)
+                for (int j = y - 1; j <= y + 1; j++)
                 {
-                    output += GetSquareAsString(j, i);
+                    if (i < 0 || i >= xSize || j < 0 || j >= ySize) continue;
+                    string square = $"{GetLetterOfInt(i)}{j + 1}";
+                    switch (board[square])
+                    {
+                        case Square.Mine:
+                            break;
+                        default:
+                            board[square]++;
+                            break;
+                    }
                 }
-                output += "\n";
             }
-            return output;
         }
 
         /// <summary>
@@ -87,7 +83,7 @@ namespace Minesweaper.BoardInfo
         /// </summary>
         /// <param name="i">Integer input</param>
         /// <returns>Letter (or group of letters) base on input.</returns>
-        private string GetLetterIndex(int i)
+        public static string GetLetterOfInt(int i)
         {
             string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             string output = "";
@@ -101,49 +97,23 @@ namespace Minesweaper.BoardInfo
             return output;
         }
 
-        /// <summary>
-        /// Helper method to get a string representation of an individual board space
-        /// </summary>
-        /// <param name="x">x-coordinate of square</param>
-        /// <param name="y">y-coordinate of square</param>
-        /// <returns>string representation of ( x, y ) value</returns>
-        private string GetSquareAsString(int x, int y)
+        public Square GetValue(string square)
+        {
+            return board[square];
+        }
+
+        public bool Contains(string square)
+        {
+            return board.ContainsKey(square);
+        }
+
+        //TODO: delete this override - used only for testing class.
+        public override string ToString()
         {
             string output = "";
-
-            if (x < 0)
+            foreach (string key in board.Keys)
             {
-                string rowNum = (y < 0) ? " " : $"{y + 1}";
-                while (rowNum.Length < ySize.ToString().Length)
-                {
-                    rowNum = " " + rowNum;
-                }
-                output += $"{rowNum} ";
-            }
-            else if (y < 0)
-            {
-                output += $"| {GetLetterIndex(x)} ";
-            } 
-            else
-            {
-                string pos = $"{GetLetterIndex(x)}{y + 1}";
-
-                if (guesses.Contains(pos))
-                {
-                    switch (board[pos])
-                    {
-                        case Square.Empty:
-                            output += "|   ";
-                            break;
-                        case Square.Mine:
-                            output += "| * ";
-                            break;
-                    }
-                }
-                else
-                {
-                    output += "| - ";
-                }
+                output += $"{key}:{board[key]}\n";
             }
             return output;
         }

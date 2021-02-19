@@ -8,11 +8,11 @@ namespace Minesweaper
     {
         static void Main(string[] args)
         {
-            IUIHelper UIHelper = new CLIHelper();
+            IUIHelper uiHelper = new CLIHelper();
             
-            DisplayHeader(UIHelper);
+            DisplayHeader(uiHelper);
             
-            Menu main = new MainMenu(UIHelper);
+            Menu main = new MainMenu(uiHelper);
             main.Open();
         }
 

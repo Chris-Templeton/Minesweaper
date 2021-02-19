@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Minesweaper.BoardInfo;
 using Minesweaper.Helpers;
 using Minesweaper.Menus;
@@ -7,51 +8,92 @@ namespace Minesweaper
 {
     public class Minesweaper
     {
+        private IUIHelper uiHelper;
         private Board board;
-        private IUIHelper UIHelper;
+        private List<string> guesses;
+        private CLIBoardWriter boardWriter;
+        private bool isFinished, hasHitMine;
 
         public Minesweaper(Difficulty diff, int boardSizeX, int boardSizeY, IUIHelper uiHelper)
         {
-            UIHelper = uiHelper;
+            this.uiHelper = uiHelper;
 
             board = new Board(boardSizeX, boardSizeY);
             board.Populate(diff);
+
+            guesses = new List<string>();
+            boardWriter = new CLIBoardWriter(board, guesses);
+            isFinished = false; hasHitMine = false;
         }
 
         public void Play()
         {
-            PrintBoard("Make a guess to start playing!");
+            string guess;
+            uiHelper.Clear();
+            uiHelper.WriteLine("");
+            uiHelper.WriteLine("New Game Started!\n");
+            boardWriter.WriteBoard();
+            uiHelper.WriteLine("");
 
-            while (!board.IsFinished)
+            while (!isFinished)
             {
-                string guess = UIHelper.GetString("Select square to guess (ie. A1):");
-                string result = board.Guess(guess);
-
-                PrintBoard(result);
+                guess = uiHelper.GetString("Enter space to guess:");
+                uiHelper.Clear();
+                uiHelper.WriteLine("");
+                Square? sq = Guess(guess);
+                if (sq is null)
+                {
+                    uiHelper.WriteLine("That wasn't a square!\n");
+                }
+                else if (sq.Equals(Square.Empty))
+                {
+                    uiHelper.WriteLine("That was Empty!\n");
+                }
+                else
+                {
+                    uiHelper.WriteLine($"That was a {sq}!\n");
+                }
+                boardWriter.WriteBoard();
+                uiHelper.WriteLine("");
             }
 
-            string input = UIHelper.GetString("Play again (y/n)?");
-            switch(input)
+            if (hasHitMine)
             {
-                case "y":
-                    Menu diffMenu = new DifficultyMenu(UIHelper);
-                    diffMenu.Open();
-                    break;
-                case "n":
-                    UIHelper.WriteLine("That's unfortunate.");
-                    break;
-                default:
-                    UIHelper.WriteLine("That wasn't y or n! Exiting game.");
-                    break;
+                uiHelper.WriteLine("Better luck next time!");
+            }
+            else
+            {
+                uiHelper.WriteLine("Congratulations!");
             }
         }
 
-        private void PrintBoard(string header)
+        private Square? Guess(string square)
         {
-            UIHelper.Clear();
-            UIHelper.WriteLine(header);
-            UIHelper.WriteLine("");
-            UIHelper.WriteLine(board);
+            Square? sq = null;
+
+            if (board.Contains(square))
+            {
+                guesses.Add(square);
+                sq = board.GetValue(square);
+                switch (sq)
+                {
+                    case Square.Mine:
+                        isFinished = true;
+                        hasHitMine = true;
+                        break;
+                    case Square.Empty:
+                        GuessSurroundingSquares(square);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return sq;
+        }
+
+        private void GuessSurroundingSquares(string square)
+        {
+
         }
     }
 }
