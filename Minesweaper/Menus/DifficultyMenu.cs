@@ -7,18 +7,15 @@ namespace Minesweaper.Menus
 {
     public class DifficultyMenu : Menu
     {
-        protected override Dictionary<string, Action> options
+        protected override Dictionary<string, Action> options => new Dictionary<string, Action>()
         {
-            get
-            {
-                return new Dictionary<string, Action>()
-                {
-                    { "Easy", PlayEasyGame },
-                    { "Medium", PlayMediumGame },
-                    { "Hard", PlayHardGame }
-                };
-            }
-        }
+            { "Easy", PlayEasyGame },
+            { "Medium", PlayMediumGame },
+            { "Hard", PlayHardGame },
+            { "Custom", PlayCustomGame}
+        };
+
+        protected override string name => "Select Difficulty";
 
         public DifficultyMenu(IUIHelper uiHelper) : base(uiHelper) { }
 
@@ -39,9 +36,18 @@ namespace Minesweaper.Menus
 
         private void Play(Difficulty diff)
         {
-            Minesweaper ms = new Minesweaper(diff, 10, 10, uiHelper);
+            Minesweaper ms = new Minesweaper(10, 10, diff, uiHelper);
             ms.Play();
-            isRunning = false;
+
+            uiHelper.WriteLine("");
+            string response = uiHelper.GetString("Play again (y/n)?");
+            if (response.ToLower() == "n") isRunning = false;
+        }
+
+        private void PlayCustomGame()
+        {
+            Menu custom = new CustomGameMenu(uiHelper);
+            custom.Open();
         }
     }
 }

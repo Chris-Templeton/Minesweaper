@@ -12,7 +12,7 @@ namespace Minesweaper
             
             DisplayHeader(uiHelper);
             
-            Menu main = new MainMenu(uiHelper);
+            Menu main = new DifficultyMenu(uiHelper);
             main.Open();
         }
 

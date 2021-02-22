@@ -7,14 +7,14 @@ namespace Minesweaper.BoardInfo
     public class Board
     {
         private Dictionary<string, Square> board;
-        public readonly int xSize, ySize;
+        public readonly int xSize, ySize, totalMines;
 
         /// <summary>
         /// Creates board of given (X x Y) size.
         /// </summary>
         /// <param name="x">Number of Columns</param>
         /// <param name="y">Number of Rows</param>
-        public Board(int x, int y)
+        public Board(int x, int y, Difficulty diff)
         {
             board = new Dictionary<string, Square>();
             xSize = x; ySize = y;
@@ -26,20 +26,21 @@ namespace Minesweaper.BoardInfo
                     board.Add($"{GetLetterOfInt(i)}{j + 1}", Square.Empty);
                 }
             }
+
+            totalMines = (int)diff * board.Count / 100;
+            Populate();
         }
 
         /// <summary>
-        /// Poopulates board based off difficulty.
+        /// Poopulates board.
         /// </summary>
-        /// <param name="diff">Difficulty of board.</param>
-        public void Populate(Difficulty diff)
+        private void Populate()
         {
             int numMines = 0;
-            int totalMinesNeeded = (int)diff * board.Count / 100;
             List<string> keys = Enumerable.ToList(board.Keys);
             Random rand = new Random();
 
-            while (numMines < totalMinesNeeded)
+            while (numMines < totalMines)
             {
                 int randomX = rand.Next(0, xSize);
                 int randomY = rand.Next(0, ySize);
@@ -64,7 +65,8 @@ namespace Minesweaper.BoardInfo
             {
                 for (int j = y - 1; j <= y + 1; j++)
                 {
-                    if (i < 0 || i >= xSize || j < 0 || j >= ySize) continue;
+                    if (i < 0 || i >= xSize || j < 0 || j >= ySize) 
+                        continue;
                     string square = $"{GetLetterOfInt(i)}{j + 1}";
                     switch (board[square])
                     {
@@ -105,17 +107,6 @@ namespace Minesweaper.BoardInfo
         public bool Contains(string square)
         {
             return board.ContainsKey(square);
-        }
-
-        //TODO: delete this override - used only for testing class.
-        public override string ToString()
-        {
-            string output = "";
-            foreach (string key in board.Keys)
-            {
-                output += $"{key}:{board[key]}\n";
-            }
-            return output;
         }
     }
 }

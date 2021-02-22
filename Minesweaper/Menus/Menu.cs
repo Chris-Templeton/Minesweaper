@@ -10,6 +10,7 @@ namespace Minesweaper.Menus
         protected abstract Dictionary<string, Action> options { get; }
         protected IUIHelper uiHelper;
         protected bool isRunning;
+        protected virtual string name { get; }
 
         public Menu(IUIHelper uiHelper)
         {
@@ -25,6 +26,12 @@ namespace Minesweaper.Menus
 
             do
             {
+                if (!(name is null))
+                {
+                    uiHelper.WriteLine("");
+                    uiHelper.WriteLine(name);
+                }
+
                 uiHelper.WriteLine("");
                 for (int i = 0; i < prompt.Count; i++)
                 {
